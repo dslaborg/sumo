@@ -1,0 +1,6 @@
+# Ignore everything
+*
+
+# Final model checkpoint
+!.gitignore
+!final.ckpt

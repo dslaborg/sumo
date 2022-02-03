@@ -1,0 +1,13 @@
+name: sumo
+channels:
+  - defaults
+  - pytorch
+dependencies:
+  - python=3.9.10
+  - matplotlib=3.4.3
+  - numpy=1.19.2
+  - pytorch=1.10.0
+  - pytorch-lightning=1.5.4
+  - scipy=1.6.2
+  - scikit-learn=0.24.1
+  - pyyaml=6.0

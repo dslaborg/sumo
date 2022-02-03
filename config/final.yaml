@@ -1,0 +1,9 @@
+data:
+  directory: 'input'
+  file_name: 'subjects_val.pickle'
+
+  split:
+    train: 'train'
+    validation: 'val'
+    cross_validation: Null
+    test: 'test'

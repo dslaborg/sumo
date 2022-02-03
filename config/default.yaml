@@ -1,0 +1,46 @@
+data:
+  directory: 'input'
+  file_name: 'subjects_cv.pickle'
+
+  split:
+    train: Null
+    validation: Null
+    cross_validation: 6
+    test: 'test'
+
+  batch_size: 12
+  preprocessing: True
+
+experiment:
+  model:
+    n_classes: 2
+    activation: 'ReLU'
+    depth: 2
+    channel_size: 16
+    pools: [ 4, 4 ]
+    convolution_params:
+      kernel_size: 5
+      padding: 'same'
+      dilation: 2
+    moving_avg_size: 42
+
+  train:
+    n_epochs: 800
+    early_stopping: 300
+
+    optimizer:
+      class_name: 'Adam'
+      params:
+        lr: 5.0e-3
+        betas: [ 0.9, 0.999 ]
+        eps: 1.0e-8
+        weight_decay: 0.0
+
+    lr_scheduler: Null
+
+    loss:
+      class_name: 'GeneralizedDiceLoss'
+      params: { }
+
+  validation:
+    overlap_threshold_step: 0.05

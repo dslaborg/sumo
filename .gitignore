@@ -1,0 +1,14 @@
+# SUMO
+## sensitive input data
+/input
+
+# Python
+## Byte-compiled / optimized / DLL files
+__pycache__/
+
+# IntelliJ
+/**/.idea/
+/**/out/
+/**/*.iml
+/**/*.ipr
+/**/*.iws
