@@ -37,8 +37,8 @@ class Config:
         config_data = config['data']
         # the data might be None, in case predictions should be run on data in a custom format
         if config_data:
-            self.data_dir = config_data['directory']
-            self.data_file = base_dir / self.data_dir / config_data['file_name']
+            self.data_dir = Path(config_data['directory'])
+            self.data_file = self.data_dir / config_data['file_name']
 
             with open(self.data_file, 'rb') as data_file:
                 subjects = pickle.load(data_file)
