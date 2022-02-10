@@ -25,7 +25,7 @@ class Config:
     def __init__(self, experiment: str, create_dirs=True):
         self.experiment = experiment
 
-        base_dir = Path(__file__).parents[2]
+        base_dir = Path(__file__).absolute().parents[2]
         with open(base_dir / 'config' / 'default.yaml', 'r') as conf:
             config = yaml.safe_load(conf)
 

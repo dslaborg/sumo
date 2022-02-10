@@ -15,7 +15,7 @@ from a7.butter_filter import butter_bandpass_filter
 from a7.detect_spindles import detect_spindles
 
 # append root dir to python path so that we find `sumo`
-path.insert(0, str(Path(__file__).parents[1].absolute()))
+path.insert(0, str(Path(__file__).absolute().parents[1]))
 from sumo.config import Config
 from sumo.data import spindle_vect_to_indices
 from sumo.model import SUMO
@@ -76,7 +76,7 @@ def A7(x, sr, return_features=False):
 
 
 def get_args():
-    default_model_path = (Path(__file__).parents[1] / 'output' / 'final.ckpt').__str__()
+    default_model_path = (Path(__file__).absolute().parents[1] / 'output' / 'final.ckpt').__str__()
 
     parser = argparse.ArgumentParser(description='Evaluate a UTime model on any given eeg data')
     parser.add_argument('-d', '--data_path', type=str, required=True, help='Path to input data, given in .pickle or \

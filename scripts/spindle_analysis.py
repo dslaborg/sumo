@@ -10,7 +10,7 @@ from scipy.stats import linregress
 from a7.detect_spindles import detect_spindles
 
 # append root dir to python path so that we find `sumo`
-path.insert(0, str(Path(__file__).parents[1].absolute()))
+path.insert(0, str(Path(__file__).absolute().parents[1]))
 from sumo.config import Config
 from sumo.data import MODADataModule, spindle_vect_to_indices
 from sumo.model import SUMO
@@ -187,7 +187,7 @@ if __name__ == '__main__':
     plt.rcParams['svg.fonttype'] = 'none'
 
     experiment = 'final'
-    base_dir = Path(__file__).parents[1]
+    base_dir = Path(__file__).absolute().parents[1]
     checkpoint = base_dir / 'output/final.pth'
 
     config = Config(experiment, create_dirs=False)

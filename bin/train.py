@@ -7,7 +7,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 
 # append root dir to python path so that we find `sumo`
-path.insert(0, str(Path(__file__).parents[1].absolute()))
+path.insert(0, str(Path(__file__).absolute().parents[1]))
 from sumo.config import Config
 from sumo.data import MODADataModule, MODADataModuleCV
 from sumo.log import FileLogger, ExperimentLogger
