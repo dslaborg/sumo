@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytorch_lightning as pl
 import torch
+import torch.nn.functional as F
 
 # append root dir to python path so that we find `sumo`
 path.insert(0, str(Path(__file__).absolute().parents[1]))
@@ -70,12 +71,21 @@ def plot_good_interval(subjects_all, predictions_all):
                     return
 
 
+def predict_step(self, batch, batch_idx, dataloader_idx=None):
+    data, mask = batch
+    # return the predictions after postprocessing and transformation by softmax
+    return F.softmax(self(data), dim=1)
+
+
 if __name__ == '__main__':
     plt.rcParams['svg.fonttype'] = 'none'
 
+    # dirty hack to be able to easily plot the prediction (without argmax)
+    SUMO.predict_step = predict_step
+
     experiment = 'final'
     base_dir = Path(__file__).absolute().parents[1]
-    checkpoint = base_dir / 'output/final.pth'
+    checkpoint = base_dir / 'output' / 'final.ckpt'
 
     config = Config(experiment, create_dirs=False)
     config.batch_size = 3
@@ -85,7 +95,7 @@ if __name__ == '__main__':
 
     model_state = torch.load(checkpoint)
     model = SUMO(config)
-    model.load_state_dict(model_state['model_state_dict'])
+    model.load_state_dict(model_state['state_dict'])
 
     sample_rate = 100
     overlap_thresholds = config.overlap_thresholds
