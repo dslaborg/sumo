@@ -58,7 +58,8 @@ def choose_split():
         for f1_mean in pool.map(split_evaluation, input_files):
             f1s.append(f1_mean)
 
-    final_split_idx = np.where(f1s == np.median(f1s))[0][0]
+    # for an even number of splits use the split with the f1 score closest to the median
+    final_split_idx = np.where(f1s == np.quantile(f1s, 0.5, interpolation='nearest'))[0][0]
     shutil.copy(input_files[final_split_idx], output_dir / 'final_split.pickle')
 
     return final_split_idx, f1s

@@ -1,3 +1,7 @@
+"""
+As the parallel execution using the ProcessPoolExecutor only seems to work if the parallelized function is imported,
+the split_evaluation function is extracted into this helper file.
+"""
 import pickle
 
 import numpy as np
