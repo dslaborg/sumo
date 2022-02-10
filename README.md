@@ -57,7 +57,7 @@ Arguments:
 Demonstrates how to predict spindles with a trained SUMO model on arbitrary EEG data, which is expected as a dict with the keys representing the EEG channels and the values the corresponding data vector.
 
 Arguments:
-* `-d PATH, --data_path PATH`: path containing the input data, either in `.pickle` or `.npy` format, as a dict with the channel name as key and the EEG data as value; no default value
+* `-d PATH, --data_path PATH`: path containing the input data, either in `.pickle` or `.npy` format, as a dict with the channel name as key and the EEG data as value; default is `<project-dir>/input/eeg-sample.npy` (white noise)
 * `-m PATH, --model_path PATH`: path containing the model checkpoint, which should be used to predict spindles; default is `<project-dir>/output/final.ckpt`
 * `-g NUMBER, --gpus NUMBER`: number of GPUs to use, if `0` is given, calculations are done using CPUs; default is `0`
 * `-sr RATE, --sample_rate RATE`: sample rate of the provided data; default is `100.0`

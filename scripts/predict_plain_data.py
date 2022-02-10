@@ -76,11 +76,13 @@ def A7(x, sr, return_features=False):
 
 
 def get_args():
+    # just random (white noise) input data
+    default_data_path = (Path(__file__).absolute().parents[1] / 'input' / 'eeg-sample.npy').__str__()
     default_model_path = (Path(__file__).absolute().parents[1] / 'output' / 'final.ckpt').__str__()
 
     parser = argparse.ArgumentParser(description='Evaluate a UTime model on any given eeg data')
-    parser.add_argument('-d', '--data_path', type=str, required=True, help='Path to input data, given in .pickle or \
-    .npy format as a dict with the channel name as key and the eeg data as value')
+    parser.add_argument('-d', '--data_path', type=str, default=default_data_path, help='Path to input data, given in \
+    .pickle or .npy format as a dict with the channel name as key and the eeg data as value')
     parser.add_argument('-sr', '--sample_rate', type=float, default=100.0,
                         help='Rate with which the given data was sampled')
     parser.add_argument('-m', '--model_path', type=str, default=default_model_path,
@@ -107,6 +109,8 @@ if __name__ == '__main__':
     channels = data.keys()
     eegs = list(data.values())
 
+    eegs = [butter_bandpass_filter(x, 0.3, 30.0, sr, 10) for x in eegs]
+
     dataset = SimpleDataset(eegs)
     dataloader = DataLoader(dataset)
 
@@ -116,9 +120,7 @@ if __name__ == '__main__':
     predictions = trainer.predict(model, dataloader)
 
     fig, axs = plt.subplots(nrows=len(channels), sharex=True)
-    for ax, channel, eeg, pred in zip(axs, channels, eegs, predictions):
-        x = butter_bandpass_filter(eeg, 0.3, 30.0, sr, 10)
-
+    for ax, channel, x, pred in zip(axs, channels, eegs, predictions):
         t = np.arange(x.shape[0]) / sr
         ax.plot(t, x, 'k-')
 
