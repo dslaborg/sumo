@@ -90,7 +90,7 @@ if __name__ == '__main__':
     _, val_folds = create_cv_folds(np.array(final_split['train'], dtype=Subject), 6)
     output_dict = {}
     for i, val_fold in enumerate(val_folds):
-        output_dict[f'fold_{i}'] = val_fold
+        output_dict[f'fold_{i}'] = val_fold.tolist()
     output_dict['test'] = final_split['test']
     with open(output_dir / 'final_split_cv.pickle', 'wb') as output_path:
         pickle.dump(output_dict, output_path)

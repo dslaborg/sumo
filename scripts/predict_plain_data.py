@@ -25,7 +25,7 @@ def get_model(path: Union[str, Path]):
     path = Path(path)
 
     model_file = path if path.is_file() else get_best_model(path)
-    if gpus > 0:
+    if gpu:
         model_checkpoint = torch.load(model_file)
     else:
         model_checkpoint = torch.load(model_file, map_location='cpu')
@@ -87,7 +87,8 @@ def get_args():
                         help='Rate with which the given data was sampled')
     parser.add_argument('-m', '--model_path', type=str, default=default_model_path,
                         help='Path to the model checkpoint used for evaluating')
-    parser.add_argument('-g', '--gpus', type=int, default=0, help='Number of GPUs to use')
+    parser.add_argument('-g', '--gpu', action=argparse.BooleanOptionalAction, default=False,
+                        help='If a GPU should be used')
 
     return parser.parse_args()
 
@@ -98,7 +99,7 @@ if __name__ == '__main__':
     data_path = args.data_path
     sr = args.sample_rate
     model_path = args.model_path
-    gpus = args.gpus
+    gpu = args.gpu
 
     config = Config('predict', create_dirs=False)
 
@@ -116,7 +117,7 @@ if __name__ == '__main__':
 
     model = get_model(model_path)
 
-    trainer = pl.Trainer(gpus=gpus, num_sanity_val_steps=0, logger=False)
+    trainer = pl.Trainer(gpus=int(gpu), num_sanity_val_steps=0, logger=False)
     predictions = trainer.predict(model, dataloader)
 
     fig, axs = plt.subplots(nrows=len(channels), sharex=True)
