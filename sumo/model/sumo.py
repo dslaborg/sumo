@@ -15,7 +15,10 @@ class SUMO(pl.LightningModule):
     Model definition of the Slim U-Net trained on MODA (SUMO).
 
     The model is an adaption of the U-Net architecture for sleep spindle detection, as described in our paper:
-        TODO: add reference to paper once available
+        Lars Kaulen, Justus T.C. Schwabedal, Jules Schneider, Philipp Ritter and Stephan Bialonski.
+        "SUMO: Advanced sleep spindle identification with neural networks." (2022).
+        https://arxiv.org/abs/2202.05158.
+        TODO: add reference to published paper once available
 
     U-Net architecture is defined in:
         Olaf Ronneberger, Philipp Fischer and Thomas Brox. "U-Net: Convolutional Networks for Biomedical Image
