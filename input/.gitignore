@@ -1,0 +1,6 @@
+# Ignore everything
+*
+
+# Do not ignore this file and the sample input data
+!.gitignore
+!eeg-sample.npy

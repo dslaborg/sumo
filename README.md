@@ -47,8 +47,8 @@ In addition to scripts used to create the figures in our manuscript (`spindle_an
 Demonstrates the procedure used to split the data into test and non-test subjects and the subsequent creation of a hold-out validation set and (*alternatively*) cross validation folds.
 
 Arguments:
-* `-i PATH, --input PATH`: path containing the (necessary) input data, as produced by the MODA file [MODA02_genEEGVectBlock.m](https://github.com/klacourse/MODA_GC/blob/master/MODA02_genEEGVectBlock.m); relative paths starting from the `scripts` directory; default is `../input/`
-* `-o PATH, --output PATH`: path in which the generated data splits should be stored in; relative paths starting from the `scripts` directory; default is `../output/datasets_{datatime}`
+* `-i PATH, --input PATH`: path containing the (necessary) input data, as produced by the MODA file [MODA02_genEEGVectBlock.m](https://github.com/klacourse/MODA_GC/blob/master/MODA02_genEEGVectBlock.m); default is `<project-dir>/input/`
+* `-o PATH, --output PATH`: path in which the generated data splits should be stored in; default is `<project-dir>/output/datasets_{datatime}`
 * `-n NUMBER, --n_datasets NUMBER`: number of random split-candidates drawn/generated; default is `25`
 * `-t FRACTION, --test FRACTION`: Proportion of data that is used as test data; `0<=FRACTION<=1`; default is `0.2`
 
@@ -57,8 +57,8 @@ Arguments:
 Demonstrates how to predict spindles with a trained SUMO model on arbitrary EEG data, which is expected as a dict with the keys representing the EEG channels and the values the corresponding data vector.
 
 Arguments:
-* `-d PATH, --data_path PATH`: path containing the input data, either in `.pickle` or `.npy` format, as a dict with the channel name as key and the EEG data as value; relative paths starting from the `scripts` directory; no default value
-* `-m PATH, --model_path PATH`: path containing the model checkpoint, which should be used to predict spindles; relative paths starting from the `scripts` directory; default is `../output/final.ckpt`
+* `-d PATH, --data_path PATH`: path containing the input data, either in `.pickle` or `.npy` format, as a dict with the channel name as key and the EEG data as value; default is `<project-dir>/input/eeg-sample.npy` (white noise)
+* `-m PATH, --model_path PATH`: path containing the model checkpoint, which should be used to predict spindles; default is `<project-dir>/output/final.ckpt`
 * `-g NUMBER, --gpus NUMBER`: number of GPUs to use, if `0` is given, calculations are done using CPUs; default is `0`
 * `-sr RATE, --sample_rate RATE`: sample rate of the provided data; default is `100.0`
 
@@ -93,7 +93,7 @@ Any parameters or groups of parameters that should be `None`, have to be configu
 
 The available parameters are as follows:
 * `data`: configuration of the used input data; optional, can be `None` if spindle should be annotated on arbitrary EEG data
-  * `directory` and `file_name`: the input file containing the `Subject` objects (see `scripts/create_data_splits.py`) is expected to be located at `${directory}/${file_name}`, where relative paths are to be starting from the root project directory; the file should be a (pickled) dict with the name of a data set as key and the list of corresponding subjects as value; default is `input/subjects.pickle`
+  * `directory` and `file_name`: the input file containing the `Subject` objects (see `scripts/create_data_splits.py`) is expected to be located at `${directory}/${file_name}`; the file should be a (pickled) dict with the name of a data set as key and the list of corresponding subjects as value; default is `input/subjects.pickle`
   * `split`: describing the keys of the data sets to be used, specifying either `train` and `validation`, or `cross_validation`, and optionally `test`
     * `cross_validation`: can be either an integer k>=2, in which the keys `fold_0`, ..., `fold_{k-1}` are expected to exist, or a list of keys
   * `batch_size`: size of the used minbatches during training; default is `12`

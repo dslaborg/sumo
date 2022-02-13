@@ -8,7 +8,7 @@ import torch
 from a7.detect_spindles import detect_spindles
 
 # append root dir to python path so that we find `sumo`
-path.insert(0, str(Path(__file__).parents[1].absolute()))
+path.insert(0, str(Path(__file__).absolute().parents[1]))
 from spindle_analysis import get_density, get_duration
 from sumo.config import Config
 from sumo.data import MODADataModule, spindle_vect_to_indices
@@ -32,8 +32,8 @@ def print_correlations(densities_gs, densities_a7, densities, durations_gs, dura
 
 if __name__ == '__main__':
     experiment = 'final'
-    base_dir = Path(__file__).parents[1]
-    checkpoint = base_dir / 'output/final.pth'
+    base_dir = Path(__file__).absolute().parents[1]
+    checkpoint = base_dir / 'output' / 'final.ckpt'
 
     config = Config(experiment, create_dirs=False)
     config.batch_size = 3
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     model_state = torch.load(checkpoint)
     model = SUMO(config)
-    model.load_state_dict(model_state['model_state_dict'])
+    model.load_state_dict(model_state['state_dict'])
 
     sampling_rate = 100
     win_length_sec = 0.3
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 
             spindle_indices_a7 = [detect_spindles(d, thresholds, win_length_sec, win_step_sec, sampling_rate)[1] for d in subject.data]
 
-            prediction = torch.softmax(prediction, dim=1).argmax(dim=1).long().detach().cpu().numpy()
+            prediction = prediction.detach().cpu().numpy()
             spindle_indices = [spindle_vect_to_indices(v) for v in prediction]
 
             density.append(get_density(spindle_indices_gs, spindle_indices_a7, spindle_indices))

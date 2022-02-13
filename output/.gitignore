@@ -1,6 +1,6 @@
 # Ignore everything
 *
 
-# Final model checkpoint
+# Do not ignore this file and the final model checkpoint
 !.gitignore
 !final.ckpt

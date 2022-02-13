@@ -9,7 +9,7 @@ import pytorch_lightning as pl
 import torch
 
 # append root dir to python path so that we find `sumo`
-path.insert(0, str(Path(__file__).parents[1].absolute()))
+path.insert(0, str(Path(__file__).absolute().parents[1]))
 from sumo.config import Config
 from sumo.data import MODADataModule, MODADataModuleCV
 from sumo.evaluation import calculate_metrics, calculate_test_metrics, plot_metrics
