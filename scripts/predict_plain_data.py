@@ -76,7 +76,7 @@ def A7(x, sr, return_features=False):
 
 
 def get_args():
-    # just random (white noise) input data
+    # synthetic input data
     default_data_path = (Path(__file__).absolute().parents[1] / 'input' / 'eeg-sample.npy').__str__()
     default_model_path = (Path(__file__).absolute().parents[1] / 'output' / 'final.ckpt').__str__()
 
