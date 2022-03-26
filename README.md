@@ -11,15 +11,21 @@ TODO: add reference to published paper once available
 
 ## Installation Guide
 
-On Linux with `anaconda` or `miniconda` installed, the project can be used by running the following commands to clone the repository, create a new environment and install the required dependencies:
+On Linux and Windows the project can be used by running the following commands to clone the repository and install the required dependencies.
 
+Either with `anaconda` or `miniconda` installed
 ```
 git clone https://github.com/dslaborg/sumo.git
 cd sumo
 conda env create --file environment.yaml
 conda activate sumo
 ```
-
+or using `pip`
+```
+git clone https://github.com/dslaborg/sumo.git
+cd sumo
+pip install -r requirements.txt
+```
 ## Scripts - Quick Guide
 
 ### Running and evaluating an experiment
