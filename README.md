@@ -26,7 +26,16 @@ git clone https://github.com/dslaborg/sumo.git
 cd sumo
 pip install -r requirements.txt
 ```
-## Scripts - Quick Guide
+## Using the SUMO model - TL;DR
+
+When only wanting to use the already trained SUMO model (see `output/final.ckpt`) to detect spindles on unknown data, the first entry point is the `scripts/predict_plain_data.py` file.
+
+There, any EEG data - given as a dict with the channel name as key and the EEG channel as value in .pickle or .npy format - can be used to predict spindles on.
+The necessary preprocessing steps (downsampling, passband Butterworth filtering and z-transformation) are included, as well as a showcase on how to use the applied Pytorch Lightning framework to predict spindles on the transformed data.
+
+Next to the `sumo` package, containing the model and necessary functions and classes, only the configuration files `config/default.yaml` and `config/predict.yaml`, the model checkpoint `output/final.ckpt` and the input data (e.g. `input/eeg-sample.npy`) are needed to run the script.
+
+## Scripts
 
 ### Running and evaluating an experiment
 
