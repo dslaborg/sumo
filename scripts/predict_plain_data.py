@@ -87,7 +87,7 @@ def get_args():
                         help='Rate with which the given data was sampled')
     parser.add_argument('-m', '--model_path', type=str, default=default_model_path,
                         help='Path to the model checkpoint used for evaluating')
-    parser.add_argument('-g', '--gpu', action=argparse.BooleanOptionalAction, default=False,
+    parser.add_argument('-g', '--gpu', action='store_true', default=False,
                         help='If a GPU should be used')
 
     return parser.parse_args()
@@ -138,3 +138,4 @@ if __name__ == '__main__':
         ax.legend()
 
     fig.show()
+    plt.show()
