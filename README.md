@@ -11,16 +11,31 @@ TODO: add reference to published paper once available
 
 ## Installation Guide
 
-On Linux with `anaconda` or `miniconda` installed, the project can be used by running the following commands to clone the repository, create a new environment and install the required dependencies:
+On Linux and Windows the project can be used by running the following commands to clone the repository and install the required dependencies.
 
+Either with `anaconda` or `miniconda` installed
 ```
 git clone https://github.com/dslaborg/sumo.git
 cd sumo
 conda env create --file environment.yaml
 conda activate sumo
 ```
+or using `pip`
+```
+git clone https://github.com/dslaborg/sumo.git
+cd sumo
+pip install -r requirements.txt
+```
+## Using the SUMO model - TL;DR
 
-## Scripts - Quick Guide
+When only wanting to use the already trained SUMO model (see `output/final.ckpt`) to detect spindles on unknown data, the first entry point is the `scripts/predict_plain_data.py` file.
+
+There, any EEG data - given as a dict with the channel name as key and the EEG channel as value in .pickle or .npy format - can be used to predict spindles on.
+The necessary preprocessing steps (downsampling, passband Butterworth filtering and z-transformation) are included, as well as a showcase on how to use the applied Pytorch Lightning framework to predict spindles on the transformed data.
+
+Next to the `sumo` package, containing the model and necessary functions and classes, only the configuration files `config/default.yaml` and `config/predict.yaml`, the model checkpoint `output/final.ckpt` and the input data (e.g. `input/eeg-sample.npy`) are needed to run the script.
+
+## Scripts
 
 ### Running and evaluating an experiment
 
@@ -62,7 +77,7 @@ Arguments:
 Demonstrates how to predict spindles with a trained SUMO model on arbitrary EEG data, which is expected as a dict with the keys representing the EEG channels and the values the corresponding data vector.
 
 Arguments:
-* `-d PATH, --data_path PATH`: path containing the input data, either in `.pickle` or `.npy` format, as a dict with the channel name as key and the EEG data as value; default is `<project-dir>/input/eeg-sample.npy` (white noise)
+* `-d PATH, --data_path PATH`: path containing the input data, either in `.pickle` or `.npy` format, as a dict with the channel name as key and the EEG data as value; default is `<project-dir>/input/eeg-sample.npy` (synthetic data)
 * `-m PATH, --model_path PATH`: path containing the model checkpoint, which should be used to predict spindles; default is `<project-dir>/output/final.ckpt`
 * `-g NUMBER, --gpus NUMBER`: number of GPUs to use, if `0` is given, calculations are done using CPUs; default is `0`
 * `-sr RATE, --sample_rate RATE`: sample rate of the provided data; default is `100.0`

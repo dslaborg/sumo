@@ -35,17 +35,27 @@ def butter_bandpass_filter(data, lowcut, highcut, sample_rate, order):
     return sosfiltfilt(sos_low, sosfiltfilt(sos_high, data, padlen=3 * order), padlen=3 * order)
 
 
-def butter_lowpass_filter(data, highcut, sample_rate, order):
-    sos = butter(order, highcut, btype='lp', fs=sample_rate, output='sos')
-    return sosfiltfilt(sos, data, padlen=3 * order)
-
-
-def butter_highpass_filter(data, lowcut, sample_rate, order):
-    sos = butter(order, lowcut, btype='hp', fs=sample_rate, output='sos')
-    return sosfiltfilt(sos, data, padlen=3 * order)
-
-
 def downsample(data, sample_rate, resampling_frequency):
+    """
+    Downsample the given data to a target frequency.
+
+    Uses the scipy resample_poly function to transform the data from the original sample_rate to resampling_frequency.
+
+    Parameters
+    ----------
+    data : ndarray
+        The data to be downsampled; format (n_samples,)
+    sample_rate : int or float
+        The original sample rate of data
+    resampling_frequency : int or float
+        The target sample rate to transform data into, must not be higher than sample_rate
+
+    Returns
+    -------
+    data : ndarray
+        The downsampled data; format (n_samples_new,)
+    """
+
     if (sample_rate != int(sample_rate)) | (resampling_frequency != int(resampling_frequency)):
         raise Exception('parameters "sample_rate" and "resampling_frequency" have to be integers')
     elif sample_rate < resampling_frequency:

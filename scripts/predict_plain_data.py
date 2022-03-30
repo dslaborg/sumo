@@ -11,7 +11,7 @@ import torch
 from scipy.stats import zscore
 from torch.utils.data import Dataset, DataLoader
 
-from a7.butter_filter import butter_bandpass_filter
+from a7.butter_filter import butter_bandpass_filter, downsample
 from a7.detect_spindles import detect_spindles
 
 # append root dir to python path so that we find `sumo`
@@ -76,7 +76,7 @@ def A7(x, sr, return_features=False):
 
 
 def get_args():
-    # just random (white noise) input data
+    # synthetic input data
     default_data_path = (Path(__file__).absolute().parents[1] / 'input' / 'eeg-sample.npy').__str__()
     default_model_path = (Path(__file__).absolute().parents[1] / 'output' / 'final.ckpt').__str__()
 
@@ -101,6 +101,8 @@ if __name__ == '__main__':
     model_path = args.model_path
     gpu = args.gpu
 
+    resample_rate = 100.0
+
     config = Config('predict', create_dirs=False)
 
     data = np.load(data_path, allow_pickle=True)
@@ -110,7 +112,7 @@ if __name__ == '__main__':
     channels = data.keys()
     eegs = list(data.values())
 
-    eegs = [butter_bandpass_filter(x, 0.3, 30.0, sr, 10) for x in eegs]
+    eegs = [downsample(butter_bandpass_filter(x, 0.3, 30.0, sr, 10), sr, resample_rate) for x in eegs]
 
     dataset = SimpleDataset(eegs)
     dataloader = DataLoader(dataset)
@@ -122,15 +124,15 @@ if __name__ == '__main__':
 
     fig, axs = plt.subplots(nrows=len(channels), sharex=True)
     for ax, channel, x, pred in zip(axs, channels, eegs, predictions):
-        t = np.arange(x.shape[0]) / sr
+        t = np.arange(x.shape[0]) / resample_rate
         ax.plot(t, x, 'k-')
 
-        spindles_a7 = A7(x, sr)
+        spindles_a7 = A7(x, resample_rate)
         for i, spindle in enumerate(spindles_a7):
             ax.fill_between(spindle, -50, 50, alpha=0.3, color='blue', label=('A7' if i == 0 else None))
 
         spindle_vect = pred[0].numpy()
-        spindles = spindle_vect_to_indices(spindle_vect) / sr
+        spindles = spindle_vect_to_indices(spindle_vect) / resample_rate
         for i, spindle in enumerate(spindles):
             ax.fill_between(spindle, -50, 50, alpha=0.3, color='orange', label=('SUMO' if i == 0 else None))
 
