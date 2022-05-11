@@ -4,10 +4,9 @@ Implementation of the *SUMO* (*S*lim *U*-Net trained on *MO*DA) model as describ
 
 ```
 Lars Kaulen, Justus T.C. Schwabedal, Jules Schneider, Philipp Ritter and Stephan Bialonski.
-"SUMO: Advanced sleep spindle identification with neural networks." (2022).
-https://arxiv.org/abs/2202.05158
+Advanced sleep spindle identification with neural networks. Sci Rep 12, 7686 (2022).
+https://doi.org/10.1038/s41598-022-11210-y
 ```
-TODO: add reference to published paper once available
 
 ## Installation Guide
 
