@@ -1,10 +1,8 @@
 import argparse
-import re
 from pathlib import Path
 from sys import path
 from typing import Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pytorch_lightning as pl
 import torch
@@ -12,12 +10,10 @@ from scipy.stats import zscore
 from torch.utils.data import Dataset, DataLoader
 
 from a7.butter_filter import butter_bandpass_filter, downsample
-from a7.detect_spindles import detect_spindles
 
 # append root dir to python path so that we find `sumo`
 path.insert(0, str(Path(__file__).absolute().parents[1]))
 from sumo.config import Config
-from sumo.data import spindle_vect_to_indices
 from sumo.model import SUMO
 
 
@@ -67,14 +63,6 @@ class SimpleDataset(Dataset):
         return torch.from_numpy(data).float(), torch.zeros(0)
 
 
-def A7(x, sr, return_features=False):
-    thresholds = np.array([1.25, 1.3, 1.3, 0.69])
-    win_length_sec = 0.3
-    win_step_sec = 0.1
-    features, spindles = detect_spindles(x, thresholds, win_length_sec, win_step_sec, sr)
-    return spindles / sr if not return_features else (spindles / sr, features)
-
-
 def get_args():
     # synthetic input data
     default_data_path = (Path(__file__).absolute().parents[1] / 'input' / 'eeg-sample.npy').__str__()
@@ -122,22 +110,6 @@ if __name__ == '__main__':
     trainer = pl.Trainer(gpus=int(gpu), num_sanity_val_steps=0, logger=False)
     predictions = trainer.predict(model, dataloader)
 
-    fig, axs = plt.subplots(nrows=len(channels), sharex=True)
-    for ax, channel, x, pred in zip(axs, channels, eegs, predictions):
-        t = np.arange(x.shape[0]) / resample_rate
-        ax.plot(t, x, 'k-')
-
-        spindles_a7 = A7(x, resample_rate)
-        for i, spindle in enumerate(spindles_a7):
-            ax.fill_between(spindle, -50, 50, alpha=0.3, color='blue', label=('A7' if i == 0 else None))
-
-        spindle_vect = pred[0].numpy()
-        spindles = spindle_vect_to_indices(spindle_vect) / resample_rate
-        for i, spindle in enumerate(spindles):
-            ax.fill_between(spindle, -50, 50, alpha=0.3, color='orange', label=('SUMO' if i == 0 else None))
-
-        ax.set_title(channel)
-        ax.legend()
-
-    fig.show()
-    plt.show()
+    result = dict(zip(channels, [prediction[0].numpy() for prediction in predictions]))
+    output_dir = Path(__file__).absolute().parents[1] / 'output'
+    np.save(output_dir / 'result.npy', result)
