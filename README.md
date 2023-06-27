@@ -12,19 +12,54 @@ https://doi.org/10.1038/s41598-022-11210-y
 
 On Linux and Windows the project can be used by running the following commands to clone the repository and install the required dependencies.
 
-Either with `anaconda` or `miniconda` installed
-```
+### Either with `anaconda` or `miniconda` installed
+```shell
 git clone https://github.com/dslaborg/sumo.git
 cd sumo
 conda env create --file environment.yaml
 conda activate sumo
 ```
-or using `pip`
-```
+### or using `pip`
+```shell
 git clone https://github.com/dslaborg/sumo.git
 cd sumo
 pip install -r requirements.txt
 ```
+
+### `pip` with virtualenv for **Linux/MacOS**
+```shell
+# enter the project root
+git clone https://github.com/dslaborg/sumo.git
+cd sumo
+
+# Create the virtual env with pip
+virtualenv venv --python=python3.9.10
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# With jupyter notebook
+pip install ipykernel
+pip install ipywidgets
+```
+
+### `pip` with virtualenv for **Windows**
+```shell
+# enter the project root
+git clone https://github.com/dslaborg/sumo.git
+cd sumo
+
+# Create the virtual env with pip
+python -m venv venv
+venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# With jupyter notebook
+pip install ipykernel
+pip install ipywidgets
+```
+
 ## Using the SUMO model - TL;DR
 
 When only wanting to use the already trained SUMO model (see `output/final.ckpt`) to detect spindles on unknown data, the first entry point is the `scripts/predict_plain_data.py` file.
