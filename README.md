@@ -118,7 +118,7 @@ Arguments:
 
 ## Data Split used in the paper
 
-Below, we list the cross validation and hold out validation splits used in the paper. Each fold or split is representaed as a list of subject IDs that were included in the given fold/split.
+Below, we list the cross validation and hold out validation splits used in the paper. Each fold/split is represented as a list of subject IDs that were included in the given fold/split.
 
 ### Data split for cross validation:
 
